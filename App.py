@@ -1,9 +1,22 @@
 import streamlit as st
 
-# --- 1. SETUP & CUSTOM CSS ---
-st.set_page_config(page_title="စံ Jewelry Converter", layout="centered", page_icon="💎")
+# --- 1. SETUP & PAGE CONFIG ---
+# 'page_icon' points to the logo.png you upload to GitHub
+st.set_page_config(
+    page_title="စံ Jewelry Converter", 
+    layout="centered", 
+    page_icon="logo.png" 
+)
 
-# Custom CSS for the [စံ] Logo and Myanmar Font
+# This HTML block helps mobile browsers use your logo.png for the "Add to Home Screen" icon
+st.markdown("""
+    <head>
+        <link rel="apple-touch-icon" href="logo.png">
+        <link rel="icon" href="logo.png">
+    </head>
+    """, unsafe_allow_html=True)
+
+# Custom CSS for the [စံ] Logo and Myanmar Font styling
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Pyidaungsu&display=swap');
@@ -20,7 +33,6 @@ st.markdown("""
         font-weight: bold;
         vertical-align: middle;
     }
-    /* Style for metric labels to look cleaner */
     [data-testid="stMetricLabel"] {
         font-size: 18px;
         font-weight: bold;
@@ -141,30 +153,30 @@ elif menu == "စုစုပေါင်းအလေးချိန် (Combine
     st.divider()
     st.metric("စုစုပေါင်းအလေးချိန် (ဂရမ်)", f"{gold_g + gem_g:.4f} g")
 
-# --- 9. SIDEBAR SUPPORT SECTION ---
+# --- 9. SIDEBAR: COFFEE & CONTACT ---
 st.sidebar.markdown("---")
 st.sidebar.subheader("☕ Buy me a coffee")
 st.sidebar.write("ဒီ App လေးကို အားလုံးအတွက် အဆင်ပြေအောင် စေတနာနဲ့ အခမဲ့ ဖန်တီးပေးထားတာပါ။ အသုံးပြုရတာ အဆင်ပြေလို့ ကျေးဇူးတင်ချင်တယ်ဆိုရင်တော့ ကော်ဖီလေး တစ်ခွက်လောက် တိုက်လို့ရပါတယ်နော်။ 🙏")
 
 try:
-    
     st.sidebar.image("kbzpay.jpg", caption="Scan to Pay via KBZPay")
 except:
-    st.sidebar.info("📷 [KBZPay QR Image]")
-
+    st.sidebar.info("📷 [KBZPay QR Image Missing]")
 
 st.sidebar.markdown("---")
 st.sidebar.subheader("📞 ဆက်သွယ်ရန် (Contact)")
 st.sidebar.write("မေးမြန်းလိုသည်များရှိပါက အောက်ပါဖုန်းနံပါတ်သို့ ဆက်သွယ်နိုင်ပါတယ်-")
+# UPDATE THE NUMBER BELOW WITH YOUR REAL ONE
 st.sidebar.info("**Phone/Viber:** 09-973145067") 
 
-st.sidebar.caption("Version 1.1 | Created with ❤️")
-
+# --- 10. SIDEBAR: INSTALL INSTRUCTIONS ---
 st.sidebar.markdown("---")
 st.sidebar.subheader("📲 ဖုန်းထဲသို့ App ထည့်သွင်းနည်း")
 if st.sidebar.button("အသေးစိတ်ကြည့်ရန်"):
     st.sidebar.info("""
-    **Android:** အစက် ၃ စက် (⋮) ကိုနှိပ်ပြီး 'Install app' ကို ရွေးပါ။
+    **Android:** Chrome browser ၏ အစက် ၃ စက် (⋮) ကိုနှိပ်ပြီး 'Install app' ကို ရွေးပါ။
     
-    **iPhone:** 'Share' ခလုတ်ကိုနှိပ်ပြီး 'Add to Home Screen' ကို ရွေးပါ။
+    **iPhone:** Safari browser ၏ 'Share' ခလုတ်ကိုနှိပ်ပြီး 'Add to Home Screen' ကို ရွေးပါ။
     """)
+
+st.sidebar.caption("Version 1.2 | Created with ❤️")
