@@ -147,12 +147,18 @@ st.sidebar.subheader("☕ Buy me a coffee")
 st.sidebar.write("ဒီ App လေးကို အားလုံးအတွက် အဆင်ပြေအောင် စေတနာနဲ့ အခမဲ့ ဖန်တီးပေးထားတာပါ။ အသုံးပြုရတာ အဆင်ပြေလို့ ကျေးဇူးတင်ချင်တယ်ဆိုရင်တော့ ကော်ဖီလေး တစ်ခွက်လောက် တိုက်လို့ရပါတယ်နော်။ 🙏")
 
 try:
-    # Make sure you upload 'kbzpay.jpg' to your GitHub repo!
+    
     st.sidebar.image("kbzpay.jpg", caption="Scan to Pay via KBZPay")
 except:
-    st.sidebar.info("📷 [KBZPay QR Image Missing]")
+    st.sidebar.info("📷 [KBZPay QR Image]")
 
-st.sidebar.caption("Version 1.0 | Created with ❤️")
+
+st.sidebar.markdown("---")
+st.sidebar.subheader("📞 ဆက်သွယ်ရန် (Contact)")
+st.sidebar.write("မေးမြန်းလိုသည်များရှိပါက အောက်ပါဖုန်းနံပါတ်သို့ ဆက်သွယ်နိုင်ပါတယ်-")
+st.sidebar.info("**Phone/Viber:** 09-973145067") 
+
+st.sidebar.caption("Version 1.1 | Created with ❤️")
 
 st.sidebar.markdown("---")
 st.sidebar.subheader("📲 ဖုန်းထဲသို့ App ထည့်သွင်းနည်း")
