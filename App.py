@@ -156,24 +156,51 @@ elif menu == "အလျားတိုင်းတာခြင်း (Length)":
         res_mm = total_in * MM_PER_INCH
         st.success(f"စုစုပေါင်း မီလီမီတာ: **{res_mm:.4f} mm**")
 
-# --- 8. COMBINED WEIGHT ---
+# --- 8. GOLD WEIGHT CALCULATION (NET GOLD) ---
 elif menu == "စုစုပေါင်းအလေးချိန် (Combined)":
-    st.header("ရွှေ နှင့် ကျောက် စုစုပေါင်းအလေးချိန်")
-    st.subheader("ရွှေအလေးချိန်")
+    st.header("ရွှေအသားတင်အလေးချိန် တွက်ချက်ရန်")
+    st.write("ပစ္စည်းတစ်ခုလုံး၏ အလေးချိန်ထဲမှ ကျောက်ဖိုးနှုတ်ပြီး ရွှေသားအစစ်ကို တွက်ချက်ခြင်း")
+    
+    # 1. Input Total Weight of the Item
+    st.subheader("၁။ ပစ္စည်းတစ်ခုလုံး၏ အလေးချိန် (Total Weight)")
     col_k, col_p, col_y, col_pt = st.columns(4)
-    gk = col_k.number_input("ကျပ်", value=1, key="comb_k")
-    gp = col_p.number_input("ပဲ", value=0, key="comb_p")
-    gy = col_y.number_input("ရွေး", value=0, key="comb_y")
-    gpt = col_pt.number_input("Point", value=0.0, step=0.01, format="%.2f", key="comb_pt")
+    gk = col_k.number_input("ကျပ်", min_value=0, value=1, key="total_k")
+    gp = col_p.number_input("ပဲ", min_value=0, max_value=15, value=0, key="total_p")
+    gy = col_y.number_input("ရွေး", min_value=0, max_value=7, value=0, key="total_y")
+    gpt = col_pt.number_input("Point", min_value=0.0, max_value=9.99, step=0.01, format="%.2f", key="total_pt")
     
-    gold_g = (gk + gp/16 + gy/128 + gpt/1280) * GRAMS_PER_KYAT
+    # Convert Total Item Weight to Grams
+    total_item_grams = (gk + gp/16 + gy/128 + gpt/1280) * GRAMS_PER_KYAT
     
-    st.subheader("ကျောက်အလေးချိန်")
-    gem_ct = st.number_input("စုစုပေါင်း ကာရက် (Carat)", value=3.0, step=0.01, format="%.2f")
-    gem_g = gem_ct * GRAMS_PER_CARAT
+    # 2. Input Gemstone Weight
+    st.subheader("၂။ ကျောက်မျက်အလေးချိန် (Gemstone Weight)")
+    gem_ct = st.number_input("စုစုပေါင်း ကာရက် (Carat)", min_value=0.0, value=3.0, step=0.01, format="%.2f")
+    gem_grams = gem_ct * GRAMS_PER_CARAT
+    
+    # 3. Math: Subtract Gems from Total
+    net_gold_grams = total_item_grams - gem_grams
     
     st.divider()
-    st.metric("စုစုပေါင်းအလေးချိန် (ဂရမ်)", f"{gold_g + gem_g:.4f} g")
+    
+    # 4. Display Results
+    if net_gold_grams < 0:
+        st.error("အမှားအယွင်း ရှိနေပါသည်။ ကျောက်အလေးချိန်သည် စုစုပေါင်းအလေးချိန်ထက် များနေပါသည်။")
+    else:
+        st.subheader("ရလဒ် (အသားတင်ရွှေအလေးချိန်)")
+        st.metric("ရွှေသားအလေးချိန် (Grams)", f"{net_gold_grams:.4f} g")
+        
+        # Convert back to Kyat-Pe-Ywe for convenience
+        t_kyat = net_gold_grams / GRAMS_PER_KYAT
+        rk = int(t_kyat)
+        rp = int((t_kyat - rk) * 16)
+        ry = int(((t_kyat - rk) * 16 - rp) * 8)
+        rpt = (((t_kyat - rk) * 16 - rp) * 8 - ry) * 10
+        
+        c1, c2, c3, c4 = st.columns(4)
+        c1.metric("ကျပ်", rk)
+        c2.metric("ပဲ", rp)
+        c3.metric("ရွေး", ry)
+        c4.metric("Point", f"{rpt:.2f}")
 
 # --- 9. SIDEBAR: COFFEE & CONTACT ---
 st.sidebar.markdown("---")
