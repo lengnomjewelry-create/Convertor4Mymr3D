@@ -1,5 +1,27 @@
 import streamlit as st
 
+# 1. Use the DIRECT RAW LINK to your logo from GitHub
+# This bypasses the Streamlit server and points the iPhone directly to your file
+LOGO_URL = "https://raw.githubusercontent.com/lengnomjewelry-create/Convertor4Mymr3D/main/logo.png"
+
+st.set_page_config(
+    page_title="စံ Jewelry Converter", 
+    layout="centered", 
+    page_icon=LOGO_URL  # Force the tab icon to use your GitHub logo
+)
+
+# 2. Add these "Apple-specific" tags to force the Home Screen icon
+st.markdown(f"""
+    <head>
+        <link rel="apple-touch-icon" sizes="180x180" href="{LOGO_URL}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{LOGO_URL}">
+        <link rel="shortcut icon" href="{LOGO_URL}">
+        <meta name="apple-mobile-web-app-title" content="စံ Converter">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+    </head>
+    """, unsafe_allow_html=True)
+import streamlit as st
+
 # --- 1. SETUP & PAGE CONFIG ---
 # 'page_icon' points to the logo.png you upload to GitHub
 st.set_page_config(
