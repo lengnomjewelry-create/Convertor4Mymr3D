@@ -153,3 +153,12 @@ except:
     st.sidebar.info("📷 [KBZPay QR Image Missing]")
 
 st.sidebar.caption("Version 1.0 | Created with ❤️")
+
+st.sidebar.markdown("---")
+st.sidebar.subheader("📲 ဖုန်းထဲသို့ App ထည့်သွင်းနည်း")
+if st.sidebar.button("အသေးစိတ်ကြည့်ရန်"):
+    st.sidebar.info("""
+    **Android:** အစက် ၃ စက် (⋮) ကိုနှိပ်ပြီး 'Install app' ကို ရွေးပါ။
+    
+    **iPhone:** 'Share' ခလုတ်ကိုနှိပ်ပြီး 'Add to Home Screen' ကို ရွေးပါ။
+    """)
