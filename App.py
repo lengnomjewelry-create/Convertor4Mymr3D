@@ -1,12 +1,18 @@
 import streamlit as st
+import os
 
 # --- 1. SETUP & PAGE CONFIG ---
 LOGO_URL = "https://raw.githubusercontent.com/lengnomjewelry-create/Convertor4Mymr3D/main/logo.png"
+# Local icon path for the app experience
+LOCAL_ICON = "logo.ico"
+
+# Check if local icon exists, otherwise fallback to URL
+page_icon = LOCAL_ICON if os.path.exists(LOCAL_ICON) else LOGO_URL
 
 st.set_page_config(
     page_title="စံ Jewelry Converter", 
     layout="centered", 
-    page_icon=LOGO_URL
+    page_icon=page_icon
 )
 
 # FIXED CSS: iOS 4 Skeuomorphic Theme
@@ -76,6 +82,46 @@ st.markdown(f"""
         color: white !important;
         font-weight: bold;
     }}
+
+    /* Universal Action Button Style */
+    .action-btn {{
+        display: block;
+        width: 100%;
+        padding: 10px;
+        text-decoration: none;
+        text-align: center;
+        border-radius: 8px;
+        color: white !important;
+        font-weight: bold;
+        font-size: 14px;
+        margin-top: 8px;
+        text-shadow: 0 -1px 0 rgba(0,0,0,0.3);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.3);
+        border: 1px solid rgba(0,0,0,0.2);
+    }}
+
+    /* iOS 4 Blue Gloss (KBZPay) */
+    .kbz-btn {{
+        background: linear-gradient(to bottom, #7abcff 0%, #60abf8 44%, #4096ee 100%);
+        border-color: #2e7bbd;
+    }}
+
+    /* iOS 4 Purple/Blue Gloss (Viber) */
+    .viber-btn {{
+        background: linear-gradient(to bottom, #8f5db7 0%, #734996 100%);
+        border-color: #5a3977;
+    }}
+
+    /* iOS 4 Sky Blue Gloss (Telegram) */
+    .tg-btn {{
+        background: linear-gradient(to bottom, #37aee2 0%, #1e96c8 100%);
+        border-color: #167ba3;
+    }}
+
+    .action-btn:active {{
+        box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+        opacity: 0.9;
+    }}
     </style>
     """, unsafe_allow_html=True)
 
@@ -85,20 +131,37 @@ GRAMS_PER_CARAT = 0.2
 RATTI_RATIO = 0.91  
 MM_PER_INCH = 25.4
 
+# CONTACT INFO
+KBZ_NUMBER = "09973145067"
+KBZ_LINK = f"kbzpay://transfer/p2p?phone={KBZ_NUMBER}"
+VIBER_LINK = f"viber://chat?number=+959973145067"
+TELEGRAM_LINK = "https://t.me/Lengnom"
+
 # --- 3. HEADER ---
 st.markdown('<p><span class="my-logo">[စံ]</span> <span class="header-text">Jewelry Converter</span></p>', unsafe_allow_html=True)
 
 # --- 4. SIDEBAR ---
 with st.sidebar:
     menu = st.radio("Select Tool", ["ရွှေအလေးချိန် (Gold)", "ကျောက်မျက် (Gems)", "အလျား (Length)", "အသားတင်ရွှေ (Net Gold)"])
+    
     st.markdown("---")
-    st.subheader("☕ Buy me a coffee")
-    st.write("ဒီ App လေးကို အားလုံးအတွက် အဆင်ပြေအောင် စေတနာနဲ့ အခမဲ့ ဖန်တီးပေးထားတာပါ။ 🙏")
+    st.subheader("☕ Support & Contact")
+    st.write("ဒီ App လေးကို အားလုံးအတွက် အဆင်ပြေအောင် စေတနာနဲ့ အခမဲ့ ဖန်တီးပေးထားတာပါ။")
+    
+    # Action Buttons
+    st.markdown(f'''
+        <a href="{KBZ_LINK}" class="action-btn kbz-btn">KBZPay ဖြင့် အားပေးရန်</a>
+        <a href="{VIBER_LINK}" class="action-btn viber-btn">Contact on Viber</a>
+        <a href="{TELEGRAM_LINK}" target="_blank" class="action-btn tg-btn">Contact on Telegram</a>
+    ''', unsafe_allow_html=True)
+    
+    st.markdown("<br>", unsafe_allow_html=True)
     try:
         st.image("kbzpay.jpg")
     except:
-        st.info("Scan KBZPay to support")
-    st.info("**Contact:** 09-973145067")
+        st.info("Scan QR to support")
+        
+    st.info(f"**Name:** Leng Nom (San Jewelry)\n\n**Number:** {KBZ_NUMBER}")
 
 # --- 5. GOLD WEIGHT ---
 if menu == "ရွှေအလေးချိန် (Gold)":
