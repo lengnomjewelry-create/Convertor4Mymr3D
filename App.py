@@ -1,64 +1,81 @@
 import streamlit as st
 
-# 1. Use the DIRECT RAW LINK to your logo from GitHub
-# This bypasses the Streamlit server and points the iPhone directly to your file
+# --- 1. SETUP & PAGE CONFIG ---
 LOGO_URL = "https://raw.githubusercontent.com/lengnomjewelry-create/Convertor4Mymr3D/main/logo.png"
 
 st.set_page_config(
     page_title="စံ Jewelry Converter", 
     layout="centered", 
-    page_icon=LOGO_URL  # Force the tab icon to use your GitHub logo
+    page_icon=LOGO_URL
 )
 
-# 2. Add these "Apple-specific" tags to force the Home Screen icon
+# FIXED CSS: iOS 4 Skeuomorphic Theme
 st.markdown(f"""
-    <head>
-        <link rel="apple-touch-icon" sizes="180x180" href="{LOGO_URL}">
-        <link rel="icon" type="image/png" sizes="32x32" href="{LOGO_URL}">
-        <link rel="shortcut icon" href="{LOGO_URL}">
-        <meta name="apple-mobile-web-app-title" content="စံ Converter">
-        <meta name="apple-mobile-web-app-capable" content="yes">
-    </head>
-    """, unsafe_allow_html=True)
-import streamlit as st
-
-# --- 1. SETUP & PAGE CONFIG ---
-# 'page_icon' points to the logo.png you upload to GitHub
-st.set_page_config(
-    page_title="စံ Jewelry Converter", 
-    layout="centered", 
-    page_icon="logo.png" 
-)
-
-# This HTML block helps mobile browsers use your logo.png for the "Add to Home Screen" icon
-st.markdown("""
-    <head>
-        <link rel="apple-touch-icon" href="logo.png">
-        <link rel="icon" href="logo.png">
-    </head>
-    """, unsafe_allow_html=True)
-
-# Custom CSS for the [စံ] Logo and Myanmar Font styling
-st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Pyidaungsu&display=swap');
-    
-    .my-logo {
+    @import url('https://fonts.googleapis.com/css2?family=Pyidaungsu:wght@400;700&display=swap');
+
+    /* Global Background - iOS Classic Linen Texture fallback */
+    .main {{
+        background-color: #c5c9d1;
+        background-image: radial-gradient(#d1d5db 0.5px, transparent 0.5px);
+        background-size: 4px 4px;
+    }}
+
+    /* Results Box - iOS 4 High Gloss Skeuomorphism */
+    .result-box {{
+        background: linear-gradient(to bottom, #ffffff 0%, #e0e0e0 50%, #d1d1d1 51%, #ebebeb 100%);
+        border: 1px solid #a1a1a1;
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+        margin-bottom: 25px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.8);
+        color: #333;
+    }}
+
+    /* Professional Gold Display - iOS 4 Style Emboss */
+    .yellow-val {{
+        color: #2c3e50; 
         font-family: 'Pyidaungsu', sans-serif;
-        color: #FFD700; /* Gold Yellow */
+        font-weight: 700;
+        font-size: 36px;
+        text-shadow: 0 1px 0 rgba(255,255,255,0.8);
+    }}
+
+    .unit-text {{
+        color: #666;
+        font-size: 14px;
+        margin-right: 5px;
         font-weight: bold;
-        font-size: 42px;
+    }}
+
+    /* Header Styling - Updated to Yellow Gold */
+    .my-logo {{
+        color: #FFD700; /* Gold color for the [စံ] logo */
+        font-weight: 700;
+        font-size: 38px;
         margin-right: 10px;
-    }
-    .main-title {
-        font-size: 32px;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    }}
+    
+    .header-text {{
+        color: #FFD700; /* Matching Gold for the Title */
+        font-size: 30px;
         font-weight: bold;
-        vertical-align: middle;
-    }
-    [data-testid="stMetricLabel"] {
-        font-size: 18px;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    }}
+
+    /* iOS 4 Button-like headers for tabs */
+    .stTabs [data-baseweb="tab-list"] {{
+        background: linear-gradient(to bottom, #7d8e9e 0%, #4a5a6a 100%);
+        border-radius: 8px 8px 0 0;
+        padding: 4px;
+    }}
+    
+    .stTabs [data-baseweb="tab"] {{
+        color: white !important;
         font-weight: bold;
-    }
+    }}
     </style>
     """, unsafe_allow_html=True)
 
@@ -69,163 +86,87 @@ RATTI_RATIO = 0.91
 MM_PER_INCH = 25.4
 
 # --- 3. HEADER ---
-st.markdown('<p><span class="my-logo">[စံ]</span> <span class="main-title">Jewelry & Gold Converter</span></p>', unsafe_allow_html=True)
-st.markdown("---")
+st.markdown('<p><span class="my-logo">[စံ]</span> <span class="header-text">Jewelry Converter</span></p>', unsafe_allow_html=True)
 
-# --- 4. SIDEBAR NAVIGATION ---
-menu = st.sidebar.radio(
-    "Select Conversion Tool",
-    ["ရွှေအလေးချိန် (Gold Weight)", "ကျောက်မျက်ရတနာ (Gemstones)", "အလျားတိုင်းတာခြင်း (Length)", "စုစုပေါင်းအလေးချိန် (Combined)"]
-)
+# --- 4. SIDEBAR ---
+with st.sidebar:
+    menu = st.radio("Select Tool", ["ရွှေအလေးချိန် (Gold)", "ကျောက်မျက် (Gems)", "အလျား (Length)", "အသားတင်ရွှေ (Net Gold)"])
+    st.markdown("---")
+    st.subheader("☕ Buy me a coffee")
+    st.write("ဒီ App လေးကို အားလုံးအတွက် အဆင်ပြေအောင် စေတနာနဲ့ အခမဲ့ ဖန်တီးပေးထားတာပါ။ 🙏")
+    try:
+        st.image("kbzpay.jpg")
+    except:
+        st.info("Scan KBZPay to support")
+    st.info("**Contact:** 09-973145067")
 
-# --- 5. GOLD WEIGHT CONVERTER ---
-if menu == "ရွှေအလေးချိန် (Gold Weight)":
+# --- 5. GOLD WEIGHT ---
+if menu == "ရွှေအလေးချိန် (Gold)":
     st.header("ရွှေအလေးချိန် တွက်ချက်ရန်")
-    tab1, tab2 = st.tabs(["ဂရမ် မှ ကျပ်ပဲရွေး", "ကျပ်ပဲရွေး မှ ဂရမ်"])
-
-    with tab1:
-        grams = st.number_input("ဂရမ် (Grams) ထည့်ပါ", value=16.6, step=0.01, format="%.4f")
-        total_kyat = grams / GRAMS_PER_KYAT
-        kyat = int(total_kyat)
-        rem_pe = (total_kyat - kyat) * 16
-        pe = int(rem_pe)
-        rem_ywe = (rem_pe - pe) * 8
-        ywe = int(rem_ywe)
-        points = (rem_ywe - ywe) * 10
-        
-        st.subheader("ရလဒ်")
-        col1, col2, col3, col4 = st.columns(4)
-        col1.metric("ကျပ်", kyat)
-        col2.metric("ပဲ", pe)
-        col3.metric("ရွေး", ywe)
-        col4.metric("Point", f"{points:.2f}")
-
-    with tab2:
-        colA, colB, colC, colD = st.columns(4)
-        k_in = colA.number_input("ကျပ်", min_value=0, value=1)
-        p_in = colB.number_input("ပဲ", min_value=0, max_value=15, value=0)
-        y_in = colC.number_input("ရွေး", min_value=0, max_value=7, value=0)
-        pt_in = colD.number_input("Point", min_value=0.0, max_value=9.99, value=0.0, step=0.01, format="%.2f")
-        
-        total_k = k_in + (p_in/16) + (y_in/128) + (pt_in/1280)
-        total_g = total_k * GRAMS_PER_KYAT
-        st.success(f"စုစုပေါင်း ဂရမ်: **{total_g:.4f} g**")
-
-# --- 6. GEMSTONE CONVERTER ---
-elif menu == "ကျောက်မျက်ရတနာ (Gemstones)":
-    st.header("ကျောက်မျက် နှင့် ရတီ တွက်ချက်ရန်")
-    col1, col2 = st.columns(2)
-    with col1:
-        carat = st.number_input("ကာရက် (Carat)", value=1.3, step=0.01, format="%.2f")
-        ratti = carat / RATTI_RATIO
-        st.metric("ရတီ (Ratti)", f"{ratti:.4f}")
-    with col2:
-        amount = st.number_input("အရေအတွက် (Amount)", value=100, min_value=1)
-        st.metric("တစ်လုံးချင်းအလေးချိန်", f"{(carat/amount):.4f} ct")
-
-    st.divider()
-    sieve = amount / ratti if ratti > 0 else 0.0
-    st.metric("လုံးစီး (Sieve Size)", f"{sieve:.2f}")
-
-# --- 7. LENGTH CONVERTER ---
-elif menu == "အလျားတိုင်းတာခြင်း (Length)":
-    st.header("အလျားတိုင်းတာရန် (လက်မ ပဲ ပြား)")
-    tab3, tab4 = st.tabs(["မီလီမီတာ မှ လက်မ", "လက်မ မှ မီလီမီတာ"])
-
-    with tab3:
-        mm = st.number_input("မီလီမီတာ (mm) ထည့်ပါ", value=25.4, step=0.1)
-        total_inch = mm / MM_PER_INCH
-        inches = int(total_inch)
-        rem_pe_len = (total_inch - inches) * 16
-        pe_len = int(rem_pe_len)
-        pya = (rem_pe_len - pe_len) * 4
-        
-        st.subheader("ရလဒ်")
-        c1, c2, c3 = st.columns(3)
-        c1.metric("လက်မ", inches)
-        c2.metric("ပဲ", pe_len)
-        c3.metric("ပြား", f"{pya:.2f}")
-
-    with tab4:
-        c_i, c_p, c_py = st.columns(3)
-        in_v = c_i.number_input("လက်မ", value=1)
-        pe_v = c_p.number_input("ပဲ", value=0, max_value=15)
-        py_v = c_py.number_input("ပြား", value=0.0, max_value=3.99, step=0.01, format="%.2f")
-        
-        total_in = in_v + (pe_v/16) + (py_v/64)
-        res_mm = total_in * MM_PER_INCH
-        st.success(f"စုစုပေါင်း မီလီမီတာ: **{res_mm:.4f} mm**")
-
-# --- 8. GOLD WEIGHT CALCULATION (NET GOLD) ---
-elif menu == "စုစုပေါင်းအလေးချိန် (Combined)":
-    st.header("ရွှေအသားတင်အလေးချိန် တွက်ချက်ရန်")
-    st.write("ပစ္စည်းတစ်ခုလုံး၏ အလေးချိန်ထဲမှ ကျောက်ဖိုးနှုတ်ပြီး ရွှေသားအစစ်ကို တွက်ချက်ခြင်း")
+    t1, t2 = st.tabs(["ဂရမ် မှ ကျပ်ပဲရွေး", "ကျပ်ပဲရွေး မှ ဂရမ်"])
     
-    # 1. Input Total Weight of the Item
-    st.subheader("၁။ ပစ္စည်းတစ်ခုလုံး၏ အလေးချိန် (Total Weight)")
-    col_k, col_p, col_y, col_pt = st.columns(4)
-    gk = col_k.number_input("ကျပ်", min_value=0, value=1, key="total_k")
-    gp = col_p.number_input("ပဲ", min_value=0, max_value=15, value=0, key="total_p")
-    gy = col_y.number_input("ရွေး", min_value=0, max_value=7, value=0, key="total_y")
-    gpt = col_pt.number_input("Point", min_value=0.0, max_value=9.99, step=0.01, format="%.2f", key="total_pt")
-    
-    # Convert Total Item Weight to Grams
-    total_item_grams = (gk + gp/16 + gy/128 + gpt/1280) * GRAMS_PER_KYAT
-    
-    # 2. Input Gemstone Weight
-    st.subheader("၂။ ကျောက်မျက်အလေးချိန် (Gemstone Weight)")
-    gem_ct = st.number_input("စုစုပေါင်း ကာရက် (Carat)", min_value=0.0, value=3.0, step=0.01, format="%.2f")
-    gem_grams = gem_ct * GRAMS_PER_CARAT
-    
-    # 3. Math: Subtract Gems from Total
-    net_gold_grams = total_item_grams - gem_grams
-    
-    st.divider()
-    
-    # 4. Display Results
-    if net_gold_grams < 0:
-        st.error("အမှားအယွင်း ရှိနေပါသည်။ ကျောက်အလေးချိန်သည် စုစုပေါင်းအလေးချိန်ထက် များနေပါသည်။")
-    else:
-        st.subheader("ရလဒ် (အသားတင်ရွှေအလေးချိန်)")
-        st.metric("ရွှေသားအလေးချိန် (Grams)", f"{net_gold_grams:.4f} g")
-        
-        # Convert back to Kyat-Pe-Ywe for convenience
-        t_kyat = net_gold_grams / GRAMS_PER_KYAT
-        rk = int(t_kyat)
-        rp = int((t_kyat - rk) * 16)
-        ry = int(((t_kyat - rk) * 16 - rp) * 8)
-        rpt = (((t_kyat - rk) * 16 - rp) * 8 - ry) * 10
-        
+    with t1:
+        g_in = st.number_input("ဂရမ် (Grams)", value=16.6, format="%.4f", key="gold_g_in", min_value=0.0)
+        tk = g_in / GRAMS_PER_KYAT
+        k = int(tk)
+        p = int((tk - k) * 16)
+        y = int(((tk - k) * 16 - p) * 8)
+        pt = (((tk - k) * 16 - p) * 8 - y) * 10
+        st.markdown(f'<div class="result-box"><span class="yellow-val">{k}</span> <span class="unit-text">ကျပ်</span> <span class="yellow-val">{p}</span> <span class="unit-text">ပဲ</span> <span class="yellow-val">{y}</span> <span class="unit-text">ရွေး</span> <span class="yellow-val">{pt:.2f}</span> <span class="unit-text">Pt</span></div>', unsafe_allow_html=True)
+
+    with t2:
         c1, c2, c3, c4 = st.columns(4)
-        c1.metric("ကျပ်", rk)
-        c2.metric("ပဲ", rp)
-        c3.metric("ရွေး", ry)
-        c4.metric("Point", f"{rpt:.2f}")
+        k_i = c1.number_input("ကျပ်", value=0, key="gold_k_in", min_value=0)
+        p_i = c2.number_input("ပဲ", value=0, key="gold_p_in", min_value=0)
+        y_i = c3.number_input("ရွေး", value=0, key="gold_y_in", min_value=0)
+        pt_i = c4.number_input("Point", value=0.0, step=0.01, key="gold_pt_in", min_value=0.0)
+        tg = (k_i + p_i/16 + y_i/128 + pt_i/1280) * GRAMS_PER_KYAT
+        st.markdown(f'<div class="result-box"><p style="margin-bottom:5px; font-weight:bold;">စုစုပေါင်း ဂရမ်</p><span class="yellow-val">{tg:.4f}</span> <span class="unit-text">g</span></div>', unsafe_allow_html=True)
 
-# --- 9. SIDEBAR: COFFEE & CONTACT ---
-st.sidebar.markdown("---")
-st.sidebar.subheader("☕ Buy me a coffee")
-st.sidebar.write("ဒီ App လေးကို အားလုံးအတွက် အဆင်ပြေအောင် စေတနာနဲ့ အခမဲ့ ဖန်တီးပေးထားတာပါ။ အသုံးပြုရတာ အဆင်ပြေလို့ ကျေးဇူးတင်ချင်တယ်ဆိုရင်တော့ ကော်ဖီလေး တစ်ခွက်လောက် တိုက်လို့ရပါတယ်နော်။ 🙏")
+# --- 6. GEMSTONES ---
+elif menu == "ကျောက်မျက် (Gems)":
+    st.header("ကျောက်မျက် နှင့် ရတီ တွက်ချက်ရန်")
+    ct = st.number_input("ကာရက် (Carat)", value=1.3, key="gem_ct_in", min_value=0.0)
+    qty = st.number_input("အရေအတွက်", value=100, key="gem_qty_in", min_value=0)
+    rt = ct / RATTI_RATIO
+    sv = qty / rt if rt > 0 else 0
+    st.markdown(f'<div class="result-box"><span class="yellow-val">{rt:.4f}</span> <span class="unit-text">ရတီ</span><br><span class="yellow-val">{sv:.2f}</span> <span class="unit-text">လုံးစီး</span></div>', unsafe_allow_html=True)
 
-try:
-    st.sidebar.image("kbzpay.jpg", caption="Scan to Pay via KBZPay")
-except:
-    st.sidebar.info("📷 [KBZPay QR Image Missing]")
+# --- 7. LENGTH ---
+elif menu == "အလျား (Length)":
+    st.header("အလျားတိုင်းတာရန်")
+    t3, t4 = st.tabs(["mm to Inch", "Inch to mm"])
+    with t3:
+        m_in = st.number_input("မီလီမီတာ (mm)", value=25.4, key="len_mm_in", min_value=0.0)
+        ti = m_in / MM_PER_INCH
+        i, pe, py = int(ti), int((ti-int(ti))*16), ((ti-int(ti))*16-int((ti-int(ti))*16))*4
+        st.markdown(f'<div class="result-box"><span class="yellow-val">{i}</span> <span class="unit-text">လက်မ</span> <span class="yellow-val">{pe}</span> <span class="unit-text">ပဲ</span> <span class="yellow-val">{py:.2f}</span> <span class="unit-text">ပြား</span></div>', unsafe_allow_html=True)
+    with t4:
+        c1, c2, c3 = st.columns(3)
+        i_i = c1.number_input("လက်မ", value=1, key="len_i_in", min_value=0)
+        pe_i = c2.number_input("ပဲ", value=0, key="len_pe_in", min_value=0)
+        py_i = c3.number_input("ပြား", value=0.0, key="len_py_in", min_value=0.0)
+        t_mm = (i_i + pe_i/16 + py_i/64) * MM_PER_INCH
+        st.markdown(f'<div class="result-box"><p style="margin-bottom:5px; font-weight:bold;">မီလီမီတာ</p><span class="yellow-val">{t_mm:.4f}</span> <span class="unit-text">mm</span></div>', unsafe_allow_html=True)
 
-st.sidebar.markdown("---")
-st.sidebar.subheader("📞 ဆက်သွယ်ရန် (Contact)")
-st.sidebar.write("မေးမြန်းလိုသည်များရှိပါက အောက်ပါဖုန်းနံပါတ်သို့ ဆက်သွယ်နိုင်ပါတယ်-")
-# UPDATE THE NUMBER BELOW WITH YOUR REAL ONE
-st.sidebar.info("**Phone/Viber:** 09-973145067") 
-
-# --- 10. SIDEBAR: INSTALL INSTRUCTIONS ---
-st.sidebar.markdown("---")
-st.sidebar.subheader("📲 ဖုန်းထဲသို့ App ထည့်သွင်းနည်း")
-if st.sidebar.button("အသေးစိတ်ကြည့်ရန်"):
-    st.sidebar.info("""
-    **Android:** Chrome browser ၏ အစက် ၃ စက် (⋮) ကိုနှိပ်ပြီး 'Install app' ကို ရွေးပါ။
+# --- 8. NET GOLD ---
+elif menu == "အသားတင်ရွှေ (Net Gold)":
+    st.header("ရွှေအသားတင်အလေးချိန်")
+    st.subheader("၁။ ပစ္စည်းတစ်ခုလုံးအလေးချိန်")
+    c1, c2, c3, c4 = st.columns(4)
+    tk_i = c1.number_input("ကျပ်", value=1, key="net_k", min_value=0)
+    tp_i = c2.number_input("ပဲ", value=0, key="net_p", min_value=0)
+    ty_i = c3.number_input("ရွေး", value=0, key="net_y", min_value=0)
+    tpt_i = c4.number_input("Point", value=0.0, key="net_pt", min_value=0.0)
+    st.subheader("၂။ ကျောက်မျက်အလေးချိန်")
+    g_ct = st.number_input("ကာရက် (Carat)", value=3.0, key="net_ct", min_value=0.0)
     
-    **iPhone:** Safari browser ၏ 'Share' ခလုတ်ကိုနှိပ်ပြီး 'Add to Home Screen' ကို ရွေးပါ။
-    """)
+    total_g = (tk_i + tp_i/16 + ty_i/128 + tpt_i/1280) * GRAMS_PER_KYAT
+    gem_g = g_ct * GRAMS_PER_CARAT
+    net_g = total_g - gem_g
+    
+    ntk = net_g / GRAMS_PER_KYAT
+    nk, np, ny = int(ntk), int((ntk-int(ntk))*16), int(((ntk-int(ntk))*16-int((ntk-int(ntk))*16))*8)
+    npt = (((ntk-int(ntk))*16-int((ntk-int(ntk))*16))*8 - ny) * 10
 
-st.sidebar.caption("Version 1.2 | Created with ❤️")
+    st.markdown(f'<div class="result-box"><span class="yellow-val">{net_g:.4f}</span> <span class="unit-text">g</span><br><span class="yellow-val">{nk}</span><span class="unit-text">ကျပ်</span> <span class="yellow-val">{np}</span><span class="unit-text">ပဲ</span> <span class="yellow-val">{ny}</span><span class="unit-text">ရွေး</span> <span class="yellow-val">{npt:.2f}</span><span class="unit-text">pt</span></div>', unsafe_allow_html=True)
